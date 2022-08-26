@@ -1,0 +1,26 @@
+
+<div >
+  <div class="modal-header" >
+  <h5 class="modal-title">
+    Edit Row<br>
+    <small class="text-muted">Please enter the row details.</small>
+  </h5>
+</div>
+
+<div class="modal-body">
+<form [formGroup]="formGroup">
+  <div *ngFor="let item of row">
+    <div class="form-group">
+    <label  class="form-label">{{item.label}}</label>
+    <input class="form-control" [formControlName]="item.label">
+  </div>
+  </div>
+ 
+</form>
+</div> 
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="activeModal.dismiss('cancel');">Cancel</button>
+  <button type="button" class="btn btn-danger" (click)="deleteRow(); activeModal.dismiss('delete');">Delete</button>
+<button type="button" class="btn btn-primary" (click)="update(); activeModal.dismiss('update');">Update</button>
+</div></div>
