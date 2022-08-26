@@ -1,0 +1,78 @@
+<div class="card">
+  <div class="card-body">
+     <div class="mb-4">
+        <h4>Data Point</h4>
+     </div>
+     <ng-container *ngIf="!isLoadTab">
+        <table class="table table-bordered table-hover">
+           <thead>
+              <tr class="table-header">
+                 <th style="min-width: 120px;">File Name</th>
+                 <th style="width: 200px;">Action</th>
+              </tr>
+           </thead>
+           <tbody>
+              <ng-container *ngFor="let item of tab ; let i = index" >
+                 <tr class="cell table-row-not-expanded" (click)="item.isExpanded = !item.isExpanded">
+                    <td>{{item.isExpanded ? '&ndash;' : '+'}} {{item.file_name}}</td>
+                    <!--<td>{{item.file_name}}</td>-->
+                    <td>
+                       <button type="button" class="btn btn-primary" (click)="detail(item)">Detail</button>
+                       <button type="button" class="btn btn-danger" (click)="deleteData(item.id)">Delete</button>
+                    </td>
+                 </tr>
+                 <ng-container *ngIf="item.isExpanded">
+                  <ng-container [ngTemplateOutlet]=" isArray(item.sheet_name) ? first : second"></ng-container> 
+                  <ng-template #first>
+                  <tr>
+                       <th style="min-width: 120px;">File Sheet Name</th>
+                       <th style="width: 200px;">Action</th>
+                    </tr><!--*ngFor="let items of item.sheet_name"-->
+                    <tr class="table-row" *ngFor="let items of item.sheet_name">
+                       <td class="cell">{{items}}</td> 
+                       <td class="cell" > <button type="button" class="btn btn-danger" (click)="deleteSheet(item.id,items)">Delete</button></td>
+                    </tr>
+                  </ng-template>
+                    <ng-template #second>
+                     <tr >
+                        <th style="min-width: 120px;">File Sheet Name</th>
+                        <th style="width: 200px;">Action</th>
+                     </tr>
+                     <tr class="table-row">
+                        <td class="cell">{{item.sheet_name}}</td> 
+                        <td class="cell" > <button type="button" class="btn btn-danger" (click)="deleteData(item.id)">Delete</button></td>
+                     </tr>
+                 </ng-template>
+                 </ng-container>
+              </ng-container>
+           </tbody>
+        </table>
+     </ng-container>
+     <ng-container *ngIf="isLoadTab">
+      <ng-container [ngTemplateOutlet]=" dataSheet.sheet_name.length>1 ? mul : single"></ng-container>
+        <div class="mb-4">
+           <button class="btn btn-primary header-btn" (click)="redirectBackUrl()">Back</button>
+        </div>
+        <ngb-tabset [destroyOnHide]="false">
+         <ng-template #mul>
+           <ngb-tab *ngFor="let sheet of dataSheet.sheet_name; let i = index">
+              <ng-template ngbTabTitle>{{sheet}}</ng-template>
+              <ng-template ngbTabContent>
+                 <app-data-point-multiple-tab [rows]="sheetResult[i]"></app-data-point-multiple-tab>
+              </ng-template>
+           </ngb-tab>
+           </ng-template>
+
+           <ng-template #single>
+            <ngb-tab *ngFor="let sheet of dataSheet.sheet_name; let i = index">
+               <ng-template ngbTabTitle>{{sheet}}</ng-template>
+               <ng-template ngbTabContent>
+                  <app-data-point-multiple-tab [rows]="sheetResult"></app-data-point-multiple-tab>
+               </ng-template>
+            </ngb-tab>
+            </ng-template>
+        </ngb-tabset>
+       
+     </ng-container>
+  </div> 
+</div>
